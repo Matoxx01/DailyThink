@@ -107,5 +107,28 @@ export async function saveUserMessage(uid: string, messageData: { message: strin
   }
 }
 
+export async function getMessages(uid: string): Promise<any[]> {
+  try {
+    const messagesRef = ref(database, `users/${uid}`);
+    const snapshot = await get(messagesRef);
+    if (snapshot.exists()) {
+      const messages: any[] = [];
+      snapshot.forEach((childSnapshot) => {
+        const messageData = childSnapshot.val();
+        messages.push({
+          ...messageData,
+          id: childSnapshot.key, // Incluye el ID del mensaje
+        });
+      });
+      return messages;
+    } else {
+      console.log("No se encontraron mensajes para este usuario.");
+      return [];
+    }
+  } catch (error) {
+    console.error("Error al obtener los mensajes de Firebase:", error);
+    throw error;
+  }
+}
 
 export { database, ref, set, get, child, push, auth, user };

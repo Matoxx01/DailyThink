@@ -16,7 +16,7 @@ import {
   IonCardContent,
 } from '@ionic/react';
 import { camera, send } from 'ionicons/icons';
-import { saveUserMessage, auth } from '../firebase_config';
+import { saveUserMessage, getMessages, auth } from '../firebase_config';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../App';
 import './Home.css';
@@ -39,6 +39,20 @@ const Home: React.FC = () => {
       }
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (user) {
+      const loadMessages = async () => {
+        try {
+          const fetchedMessages = await getMessages(user.uid); // Asegúrate de tener esta función
+          setMessages(fetchedMessages);
+        } catch (error) {
+          console.error('Error fetching messages from Firebase:', error);
+        }
+      };
+      loadMessages();
+    }
+  }, [user]);
 
   const handleContinueWithoutLogin = () => {
     if (rememberSelection) {
