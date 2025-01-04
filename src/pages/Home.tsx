@@ -4,89 +4,90 @@ import {
   IonHeader,
   IonPage,
   IonTitle,
+  IonCheckbox,
+  IonFooter,
+  IonIcon,
   IonToolbar,
+  IonItem,
   IonModal,
   IonButton,
   IonInput,
-  IonLabel,
   IonCard,
   IonCardContent,
-  IonFooter,
 } from '@ionic/react';
-import { saveUserName, saveMessage, getMessages } from '../firebase_config';
+import { camera, send } from 'ionicons/icons';
+import { saveUserMessage, auth } from '../firebase_config';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../App';
 import './Home.css';
 
 const Home: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const [name, setName] = useState('');
+  const { user, isLoggedIn } = useAuth();
+  const history = useHistory();
+  const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState('');
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [rememberSelection, setRememberSelection] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const savedName = localStorage.getItem('userName');
-    if (savedName) {
-      setName(savedName);
-      setIsModalOpen(false);
+    // Verifica si el usuario está autenticado cada vez que se vuelve a la página
+    if (!isLoggedIn) {
+      const userSelection = localStorage.getItem('rememberPopupSelection');
+      if (userSelection !== 'true') {
+        setShowPopup(true); // Muestra el modal si el usuario no está autenticado
+      }
     }
-  }, []);
+  }, [isLoggedIn]);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleContinueWithoutLogin = () => {
+    if (rememberSelection) {
+      localStorage.setItem('rememberPopupSelection', 'true');
+    }
+    setShowPopup(false);
+  };
+
+  const handleLoginRedirect = () => {
+    setShowPopup(false);
+    history.push('/Login');
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
+      reader.onloadend = () => setImage(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSaveName = async () => {
-    if (name.trim()) {
-      try {
-        await saveUserName(name);
-        localStorage.setItem('userName', name);
-        console.log('Nombre guardado:', name);
-        setIsModalOpen(false);
-        console.log('Modal cerrado:', isModalOpen);
-      } catch (error) {
-        console.error('Error saving name to Firebase:', error);
-      }
-    } else {
-      alert('Por favor, ingresa un nombre válido.');
-    }
-  };
+  interface MessageData {
+    message: string;
+    image: string | null;
+    dateTime: string;
+  }
 
   const handleSendMessage = async () => {
-    const now = new Date();
-    const messageData = {
-      message,
-      image,
-      dateTime: now.toISOString(),
-    };
-    try {
-      await saveMessage(name, messageData);
-      setMessage('');
-    } catch (error) {
-      console.error('Error saving message to Firebase:', error);
+    if (user && message.trim()) {
+      const now = new Date();
+      const messageData: MessageData = {
+        message,
+        image: typeof image === 'string' ? image : null,
+        dateTime: now.toISOString(),
+      };      
+  
+      try {
+        await saveUserMessage(user.uid, messageData);
+        setMessage('');
+        setImage(null);
+      } catch (error) {
+        console.error('Error saving message to Firebase:', error);
+      }
+    } else {
+      alert('Por favor, escribe un mensaje válido e inicia sesión.');
     }
   };
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const messages = await getMessages(name);
-        setMessages(messages);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    };
-
-    if (name) {
-      fetchMessages();
-    }
-  }, [name]);
+  
 
   return (
     <IonPage>
@@ -96,38 +97,77 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        {name && (
-          <div className="message-container">
-            <h2>¿Qué estás pensando?</h2>
-            <IonInput
-              value={message}
-              onIonChange={(e) => setMessage(e.detail.value!)}
-              placeholder="Escribe tu mensaje..."
-              clearInput
-            />
-            <IonToolbar>
-              <IonButton expand="block" onClick={handleSendMessage}>
-                Enviar
-              </IonButton>
-              <input slot="end" type="file" accept="image/*" onChange={handleImageChange} />
-            </IonToolbar>
-
-            <div className="messages-list">
-              {messages.map((msg, index) => (
-                <IonCard key={index} className="message-card">
-                  <IonCardContent>
-                    <h3>{msg.message}</h3>
-                    <small>{new Date(msg.dateTime).toLocaleString()}</small>
-                  </IonCardContent>
-                  {image && <img src={msg.image} alt="message" />}
-                </IonCard>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="input-container">
+          <IonInput
+            value={message}
+            placeholder="¿Qué estás pensando?"
+            onIonChange={(e) => setMessage(e.detail.value!)}
+          />
+          <IonButton onClick={handleSendMessage}>
+            <IonIcon icon={send} />
+          </IonButton>
+          <IonButton>
+            <label htmlFor="file-input">
+              <IonIcon icon={camera} />
+            </label>
+          </IonButton>
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            style={{ display: 'none' }}
+          />
+        </div>
+        <div className="messages-container">
+          {messages.map((msg, index) => (
+            <IonCard key={index}>
+              <IonCardContent>
+                <p>{msg.message}</p>
+                {msg.image && <img src={msg.image} alt="Uploaded" />}
+                <p>{new Date(msg.dateTime).toLocaleString()}</p>
+              </IonCardContent>
+            </IonCard>
+          ))}
+        </div>
       </IonContent>
+
+      <IonModal isOpen={showPopup} backdropDismiss={false}>
+        <center>
+          <h2>¡Bienvenido a DailyThink!</h2>
+          <p>
+            Si quieres acceder a todas las funciones de DailyThink, primero debes iniciar sesión.
+          </p>
+        </center>
+        <IonItem>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+            }}
+            onClick={() => setRememberSelection(!rememberSelection)}
+          >
+            <IonCheckbox
+              style={{ marginRight: '8px' }}
+              checked={rememberSelection}
+              onIonChange={(e) => e.stopPropagation()}
+            />
+            <span>Recordar selección</span>
+          </div>
+        </IonItem>
+        <IonFooter>
+          <IonToolbar>
+            <IonButton expand="block" onClick={handleLoginRedirect}>
+              Ingresar
+            </IonButton>
+            <IonButton expand="block" fill="outline" onClick={handleContinueWithoutLogin}>
+              Continuar sin ingresar
+            </IonButton>
+          </IonToolbar>
+        </IonFooter>
+      </IonModal>
     </IonPage>
-    
   );
 };
 
