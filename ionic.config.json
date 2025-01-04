@@ -1,0 +1,7 @@
+{
+  "name": "DailyThink",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
