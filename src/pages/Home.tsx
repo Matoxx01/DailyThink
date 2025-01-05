@@ -60,6 +60,10 @@ const Home: React.FC = () => {
       console.log('Usuario autenticado, ocultar popup');
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    console.log('menuRef:', menuRef.current); // Verifica si la referencia al menú es correcta
+  }, []);
   
   useEffect(() => {
     if (user) {
@@ -165,6 +169,7 @@ const Home: React.FC = () => {
   const location = useLocation();
   const allowedPages = ['/home', '/Home'];
   const isMenuEnabled = allowedPages.some((path) => location.pathname.startsWith(path));
+  console.log('isMenuEnabled:', isMenuEnabled);
   
   const loadMessages = async () => {
     if (user) {
@@ -253,21 +258,6 @@ const Home: React.FC = () => {
     }
   };
   
-  const handleAccount = () => {
-    menuRef.current?.close();
-    history.push('/Account');
-  };
-
-  const handleLogin = () => {
-    menuRef.current?.close();
-    history.push('/Login');
-  };
-
-  const handleTimeline = () => {
-    menuRef.current?.close();
-    history.push('/Cronograma');
-  };
-  
   if (loading) {
     return (
       <IonPage>
@@ -283,7 +273,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <IonMenu contentId="main-content" className="menu" swipeGesture={isMenuEnabled} disabled={!isMenuEnabled} ref={menuRef} side="end">
+      <IonMenu contentId="main-content" className="menu" swipeGesture={true} disabled={!isMenuEnabled} ref={menuRef} side="end">
           <IonHeader>
             <IonToolbar>
               <IonTitle>Menú</IonTitle>
@@ -292,16 +282,16 @@ const Home: React.FC = () => {
           <IonContent className="ion-padding">
             <IonList>
               {isLoggedIn ? (
-                  <IonItem button onClick={handleAccount}>
+                  <IonItem button onClick={() => history.push('/Account')}>
                     <IonLabel>Mi cuenta</IonLabel>
                   </IonItem>
               ) : (
-                  <IonItem button onClick={handleLogin}>
+                  <IonItem button onClick={() => history.push('/Login')}>
                     <IonLabel>Login</IonLabel>
                   </IonItem>
               )}
               {isLoggedIn && (
-                <IonItem button onClick={handleTimeline}>
+                <IonItem button onClick={() => history.push('/Timeline')}>
                   <IonLabel>Cronograma</IonLabel> 
                 </IonItem>
               )}
@@ -392,6 +382,21 @@ const Home: React.FC = () => {
               </IonToolbar>
             </IonFooter>
           </IonModal>
+          <IonFooter>
+            <IonToolbar>
+              <center>
+                <IonButton onClick={() => history.push('/Account')}>
+                  Mi Cuenta
+                </IonButton>
+                <IonButton onClick={() => history.push('/Login')}>
+                  Iniciar sesión
+                </IonButton>
+                <IonButton onClick={() => history.push('/Timeline')}>
+                  Cronograma
+                </IonButton>
+              </center>
+            </IonToolbar>
+          </IonFooter>
         </IonPage>
         <IonAlert
           isOpen={showAlert}
