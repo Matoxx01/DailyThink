@@ -151,3 +151,10 @@ to {
 .title {
     font-family: 'Playlist', sans-serif;
 }
+
+ion-footer {
+    background-color: #ffc6e4;
+    color-scheme: light;
+    color-interpolation-filters: auto;
+    text-align: center;
+}

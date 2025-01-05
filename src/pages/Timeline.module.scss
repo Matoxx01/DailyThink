@@ -1,0 +1,84 @@
+.timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.timeline-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.timeline-item h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.timeline-item p {
+    font-size: 1em;
+    color: #666;
+}
+
+ion-datetime {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffc6e4;
+    --background-rgb: 255, 198, 228;
+    color: #933596;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+ion-datetime::part(wheel-item) {
+    color: rgb(174, 75, 144);
+  }
+  
+  ion-datetime::part(wheel-item active) {
+    color: rgb(128, 30, 171);
+  }
+  
+  .messages-container {
+    padding: 16px;
+  }
+  
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  /* Contenedor principal de carga */
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffc6e4;
+    text-align: center;
+}
+
+/* Estilo del spinner de carga */
+.loadingSpinner {
+    color: #933596;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+}
+.loadingText {
+    font-size: 1.2rem;
+    color: #72044a;
+    font-weight: 500;
+    margin-top: 10px;
+    animation: fadeIn 1s ease-in-out;
+}

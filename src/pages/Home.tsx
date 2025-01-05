@@ -273,7 +273,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <IonMenu contentId="main-content" className="menu" swipeGesture={true} disabled={!isMenuEnabled} ref={menuRef} side="end">
+      <IonMenu contentId="main-content" className="menu" swipeGesture={true} disabled={!isMenuEnabled} side="end">
           <IonHeader>
             <IonToolbar>
               <IonTitle>Menú</IonTitle>
@@ -298,7 +298,7 @@ const Home: React.FC = () => {
             </IonList>
           </IonContent>
         </IonMenu>
-        <IonPage>
+        <IonPage id="main-content">
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="end" className="menuButton">
@@ -342,6 +342,8 @@ const Home: React.FC = () => {
             </div>
             <div className="messages-container">
               {messages.map((msg) => (
+                <>
+                <h4>{msg.displayName}</h4>
                 <IonCard key={msg.id}>
                   <IonCardContent>
                     <p>{msg.message}</p>
@@ -360,6 +362,7 @@ const Home: React.FC = () => {
                     </IonRow>
                   </IonCardContent>
                 </IonCard>
+                </>
               ))}
             </div>
           </IonContent>
@@ -385,15 +388,20 @@ const Home: React.FC = () => {
           <IonFooter>
             <IonToolbar>
               <center>
+              {isLoggedIn ? (
                 <IonButton onClick={() => history.push('/Account')}>
                   Mi Cuenta
                 </IonButton>
+                ) : (
                 <IonButton onClick={() => history.push('/Login')}>
                   Iniciar sesión
                 </IonButton>
+                )}
+                {isLoggedIn &&
                 <IonButton onClick={() => history.push('/Timeline')}>
                   Cronograma
                 </IonButton>
+                }
               </center>
             </IonToolbar>
           </IonFooter>

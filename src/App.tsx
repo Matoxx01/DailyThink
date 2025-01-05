@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Reset from './pages/Reset';
 import Account from './pages/Account';
 import Register from './pages/Register';
+import Timeline from './pages/Timeline';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -99,6 +100,7 @@ const App: React.FC = () => (
           <Route path="/Reset" component={Reset} exact={true} />
           <Route path="/Account" component={Account} exact={true} />
           <Route path="/Register" component={Register} exact={true} />
+          <Route path="/Timeline" component={Timeline} exact={true} />
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
