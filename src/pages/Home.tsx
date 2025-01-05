@@ -50,16 +50,17 @@ const Home: React.FC = () => {
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('isLoggedIn:', isLoggedIn); // Verifica el estado de isLoggedIn
     if (!isLoggedIn) {
-      const userSelection = localStorage.getItem('rememberPopupSelection');
-      if (userSelection !== 'true') {
-        setShowPopup(true);
-      }
+      // Si no hay un usuario autenticado, mostramos el popup
+      console.log('Mostrar popup de inicio de sesión');
+      setShowPopup(true);
     } else {
       setShowPopup(false);
+      console.log('Usuario autenticado, ocultar popup');
     }
   }, [isLoggedIn]);
-
+  
   useEffect(() => {
     if (user) {
       const loadMessages = async () => {
@@ -350,28 +351,25 @@ const Home: React.FC = () => {
               />
             </div>
             <div className="messages-container">
-              {messages.map((msg, index) => (
-                <>
-                  {msg.displayName && <h4>{msg.displayName}</h4>}
-                  <IonCard key={index}>
-                    <IonCardContent>
-                      <p>{msg.message}</p>
-                      {msg.image && <img src={msg.image} alt="Uploaded" />}
-                      <IonRow style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <IonCol size="auto">
-                          <p>{new Date(msg.dateTime).toLocaleString()}</p>
+              {messages.map((msg) => (
+                <IonCard key={msg.id}>
+                  <IonCardContent>
+                    <p>{msg.message}</p>
+                    {msg.image && <img src={msg.image} alt="Uploaded" />}
+                    <IonRow style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <IonCol size="auto">
+                        <p>{new Date(msg.dateTime).toLocaleString()}</p>
+                      </IonCol>
+                      {user && msg.uid === user.uid && (
+                        <IonCol size="auto" style={{ textAlign: 'right' }}>
+                          <IonButton fill='outline' color="danger" onClick={() => handleDeleteMessage(msg.id)}>
+                            <IonIcon icon={trash} />
+                          </IonButton>
                         </IonCol>
-                        {user && msg.uid === user.uid && (
-                          <IonCol size="auto" style={{ textAlign: 'right' }}>
-                            <IonButton fill='outline' color="danger" onClick={() => handleDeleteMessage(msg.id)}>
-                              <IonIcon icon={trash} />
-                            </IonButton>
-                          </IonCol>
-                        )}
-                      </IonRow>
-                    </IonCardContent>
-                  </IonCard>
-                </>
+                      )}
+                    </IonRow>
+                  </IonCardContent>
+                </IonCard>
               ))}
             </div>
           </IonContent>
@@ -379,27 +377,10 @@ const Home: React.FC = () => {
           <IonModal isOpen={showPopup} backdropDismiss={false}>
             <center>
               <h2>¡Bienvenido a DailyThink!</h2>
-              <p>
+              <p style={{ padding: '0 20px' }}>
                 Si quieres acceder a todas las funciones de DailyThink, primero debes iniciar sesión.
               </p>
             </center>
-            <IonItem>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setRememberSelection(!rememberSelection)}
-              >
-                <IonCheckbox
-                  style={{ marginRight: '8px' }}
-                  checked={rememberSelection}
-                  onIonChange={(e) => e.stopPropagation()}
-                />
-                <span>Recordar selección</span>
-              </div>
-            </IonItem>
             <IonFooter>
               <IonToolbar>
                 <IonButton expand="block" onClick={handleLoginRedirect}>
