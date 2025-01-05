@@ -66,16 +66,17 @@ const Timeline: React.FC = () => {
       }, [selectedDate, messages]);
     
       if (loading) {
-        return (
-          <IonPage>
-            <IonContent className="loadingContainer" fullscreen>
-              <div className="loadingContainer">
-                <p>Cargando mensajes...</p>
-              </div>
-            </IonContent>
-          </IonPage>
-        );
-      }
+          return (
+            <IonPage>
+              <IonContent className={styles.loadingContainer} fullscreen>
+                <div className={styles.loadingContainer}>
+                  <img src="load.gif" className={styles.loadingImage} />
+                  <p className={styles.loadingText}>Cargando...</p>
+                </div>
+              </IonContent>
+            </IonPage>
+          );
+        }
 
     return (
         <IonPage>

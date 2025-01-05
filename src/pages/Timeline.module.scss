@@ -69,12 +69,14 @@ ion-datetime::part(wheel-item) {
 }
 
 /* Estilo del spinner de carga */
-.loadingSpinner {
+.loadingImage {
     color: #933596;
-    width: 64px;
-    height: 64px;
+    padding-right: 25px;
+    width: 200px;
+    height: 184px;
     margin-bottom: 1rem;
 }
+
 .loadingText {
     font-size: 1.2rem;
     color: #72044a;

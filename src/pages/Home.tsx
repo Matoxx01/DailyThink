@@ -263,7 +263,7 @@ const Home: React.FC = () => {
       <IonPage>
         <IonContent className="loadingContainer" fullscreen>
           <div className="loadingContainer">
-            <IonSpinner name="crescent" className="loadingSpinner" />
+            <img src="load.gif" className="loadingImage" />
             <p className="loadingText">Cargando...</p>
           </div>
         </IonContent>
