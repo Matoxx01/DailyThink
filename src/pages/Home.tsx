@@ -5,31 +5,23 @@ import {
   IonPage,
   IonTitle,
   IonRefresherContent,
-  IonCheckbox,
-  IonSpinner,
-  IonMenuButton,
   IonRefresher,
   IonFooter,
   IonRow,
   IonIcon,
-  IonList,
   IonToolbar,
-  IonMenu,
-  IonItem,
   IonModal,
   IonToast,
-  IonLabel,
   IonCol,
   IonButton,
   IonInput,
   IonAlert,
   IonCard,
   IonCardContent,
-  IonButtons,
 } from '@ionic/react';
 import { camera, send, star, trash } from 'ionicons/icons';
 import { saveUserMessage, getMessages, auth, deleteUserMessage } from '../firebase_config';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../App';
 import { toast } from '../toast';
 import './Home.css';
@@ -41,7 +33,6 @@ const Home: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
-  const menuRef = useRef<HTMLIonMenuElement | null>(null);
   const [message, setMessage] = useState('');
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [rememberSelection, setRememberSelection] = useState(false);
@@ -60,10 +51,6 @@ const Home: React.FC = () => {
       console.log('Usuario autenticado, ocultar popup');
     }
   }, [isLoggedIn]);
-
-  useEffect(() => {
-    console.log('menuRef:', menuRef.current); // Verifica si la referencia al menú es correcta
-  }, []);
   
   useEffect(() => {
     if (user) {
@@ -136,53 +123,36 @@ const Home: React.FC = () => {
     } finally {
       setShowAlert(false);
     }
-  };  
-  
-  const handleCancelDelete = () => {
-    setMessageToDelete(null); // Limpia el mensaje a eliminar
-    setShowAlert(false); // Cierra la alerta
-  };
-
-  type Message = {
-    userId: string;
-    text: string;
-    location: string;
-    timestamp: number;
   };
 
   useEffect(() => {
     if (user) {
       const loadMessages = async () => {
         try {
-          const fetchedMessages = await getMessages(); // Asegúrate de que estás pasando el UID correcto
+          const fetchedMessages = await getMessages();
           setMessages(fetchedMessages);
         } catch (error) {
           console.error('Error fetching messages from Firebase:', error);
-        } finally {
-          setLoading(false); // Cambia el estado a false cuando los mensajes hayan sido cargados
+          setLoading(false); // Asegúrate de actualizar el estado incluso si ocurre un error
         }
       };
       loadMessages();
     }
-  }, [user]); // Dependencia en 'user'
-
-  const location = useLocation();
-  const allowedPages = ['/home', '/Home'];
-  const isMenuEnabled = allowedPages.some((path) => location.pathname.startsWith(path));
-  console.log('isMenuEnabled:', isMenuEnabled);
+  }, [user]);  
   
   const loadMessages = async () => {
     if (user) {
       try {
         const fetchedMessages = await getMessages();
+        console.log("Mensajes obtenidos:", fetchedMessages); // Verifica los mensajes obtenidos
         setMessages(fetchedMessages);
       } catch (error) {
         console.error('Error fetching messages from Firebase:', error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Cambia el estado a false cuando los mensajes hayan sido cargados
       }
     }
-  };
+  };  
 
   const handleRefresh = async (event: CustomEvent) => {
     setLoading(true);
@@ -333,11 +303,11 @@ const Home: React.FC = () => {
             <div className="messages-container">
               {messages.map((msg) => (
                 <>
-                <h4>{msg.displayName}</h4>
+                <h4 key={msg.displayName} >{msg.displayName}</h4>
                 <IonCard key={msg.id}>
-                  <IonCardContent>
+                  <IonCardContent key={msg.id}>
                     <p>{msg.message}</p>
-                    {msg.image && <img src={msg.image} alt="Uploaded" />}
+                    <img src={msg.image} />
                     <IonRow style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <IonCol size="auto">
                         <p>{new Date(msg.dateTime).toLocaleString()}</p>
