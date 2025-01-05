@@ -272,38 +272,10 @@ const Home: React.FC = () => {
   }
 
   return (
-    <>
-      <IonMenu contentId="main-content" className="menu" swipeGesture={true} disabled={!isMenuEnabled} side="end">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Menú</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <IonList>
-              {isLoggedIn ? (
-                  <IonItem button onClick={() => history.push('/Account')}>
-                    <IonLabel>Mi cuenta</IonLabel>
-                  </IonItem>
-              ) : (
-                  <IonItem button onClick={() => history.push('/Login')}>
-                    <IonLabel>Login</IonLabel>
-                  </IonItem>
-              )}
-              {isLoggedIn && (
-                <IonItem button onClick={() => history.push('/Timeline')}>
-                  <IonLabel>Cronograma</IonLabel> 
-                </IonItem>
-              )}
-            </IonList>
-          </IonContent>
-        </IonMenu>
+      <>
         <IonPage id="main-content">
           <IonHeader>
             <IonToolbar>
-              <IonButtons slot="end" className="menuButton">
-                <IonMenuButton></IonMenuButton>
-              </IonButtons> 
               <IonTitle className="title">DailyThink</IonTitle>
             </IonToolbar>
           </IonHeader>
@@ -340,6 +312,23 @@ const Home: React.FC = () => {
                 style={{ display: 'none' }}
               />
             </div>
+            
+            <center>
+              {isLoggedIn ? (
+                <IonButton onClick={() => history.push('/Account')}>
+                  Mi Cuenta
+                </IonButton>
+                ) : (
+                <IonButton onClick={() => history.push('/Login')}>
+                  Iniciar sesión
+                </IonButton>
+                )}
+                {isLoggedIn &&
+                <IonButton onClick={() => history.push('/Timeline')}>
+                  Cronograma
+                </IonButton>
+                }
+              </center>
             <div className="messages-container">
               {messages.map((msg) => (
                 <>
@@ -385,26 +374,6 @@ const Home: React.FC = () => {
               </IonToolbar>
             </IonFooter>
           </IonModal>
-          <IonFooter>
-            <IonToolbar>
-              <center>
-              {isLoggedIn ? (
-                <IonButton onClick={() => history.push('/Account')}>
-                  Mi Cuenta
-                </IonButton>
-                ) : (
-                <IonButton onClick={() => history.push('/Login')}>
-                  Iniciar sesión
-                </IonButton>
-                )}
-                {isLoggedIn &&
-                <IonButton onClick={() => history.push('/Timeline')}>
-                  Cronograma
-                </IonButton>
-                }
-              </center>
-            </IonToolbar>
-          </IonFooter>
         </IonPage>
         <IonAlert
           isOpen={showAlert}
