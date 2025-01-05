@@ -292,6 +292,7 @@ const Home: React.FC = () => {
               </IonRefresher>
             <div className="input-container">
               <IonInput
+              className='input'
                 value={message}
                 placeholder="¿Qué estás pensando?"
                 onIonChange={(e) => setMessage(e.detail.value!)}
@@ -360,7 +361,7 @@ const Home: React.FC = () => {
             <center>
               <h2>¡Bienvenido a DailyThink!</h2>
               <p style={{ padding: '0 20px' }}>
-                Si quieres acceder a todas las funciones de DailyThink, primero debes iniciar sesión.
+                Si quieres acceder a todas las funciones, primero debes iniciar sesión.
               </p>
             </center>
             <IonFooter>

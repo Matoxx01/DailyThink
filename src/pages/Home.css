@@ -1,5 +1,9 @@
 .input-container {
     display: flex;
+    border: 1px solid #84a1c1;
+    border-radius: 6px;
+    background-color: #feb8ff;
+    margin: 10px;
     align-items: center;
     padding: 16px;
     gap: 8px;
@@ -7,6 +11,10 @@
 
 .refreshSpinner .ion-icon {
     color: #84a1c1;
+}
+
+.input {
+    border-bottom: 1px solid #640947;
 }
 
 .input-message {
