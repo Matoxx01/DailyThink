@@ -64,7 +64,7 @@ import {
             setShowToast(true);
   
             setIsLoggedIn(true);
-            setUser({ uid: res.uid, email: mail });
+            setUser({ uid: res.uid, email: mail, displayName: '' });
   
             localStorage.setItem('user', JSON.stringify({ uid: res.uid, email: mail }));
   

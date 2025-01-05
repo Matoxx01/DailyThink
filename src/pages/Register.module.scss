@@ -14,7 +14,7 @@
   height: 100vh;
   padding-bottom: env(safe-area-inset-bottom);
   margin: 0 auto;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background: linear-gradient(135deg, #e28bba, #dec3e2);
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
@@ -26,7 +26,7 @@
   font-size: 2rem;
   font-weight: bold;
   font-family: 'Poppins', sans-serif;
-  color: #333;
+  color: #933596;
   margin-bottom: 24px;
   text-align: center;
   animation: slideIn 1s ease-out;
@@ -58,9 +58,10 @@ ion-item:hover {
 /* Buttons */
 .registerButton {
   margin-top: 20px;
-  --background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  --background: linear-gradient(90deg, #de65e2, #9b35bd);
   --border-radius: 20px;
   --box-shadow: 0 4px 15px rgba(255, 126, 95, 0.3);
+  color: rgb(255, 255, 255);
   color: white;
   font-weight: bold;
   letter-spacing: 1px;

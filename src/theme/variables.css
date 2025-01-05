@@ -1,30 +1,15 @@
 :root {
-    --ion-color-primary: #4283b5;
-    --ion-color-primary-rgb: 66, 131, 181;
-    --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #316898;
-    --ion-color-primary-tint: #5c99c7;
+  --ion-color-primary: #ca62d3; /* Color primario */
+  --ion-color-secondary: #af43b6; /* Color secundario */
+  --ion-color-tertiary: #933596; /* Color terciario */
   
-    --ion-color-secondary: #9bc0de;
-    --ion-color-secondary-rgb: 155, 192, 222;
-    --ion-color-secondary-contrast: #ffffff;
-    --ion-color-secondary-contrast-rgb: 255, 255, 255;
-    --ion-color-secondary-shade: #7ca7c6;
-    --ion-color-secondary-tint: #b5d2e7;
+  --ion-background-color: #ffc6e4; /* Fondo blanco */
+  --ion-text-color: #000000; /* Texto negro */
+  --ion-toolbar-background: #ff9dff; /* Fondo de la barra de herramientas */
+  --ion-toolbar-color: #4b044e; /* Color del texto en la barra de herramientas */
+  --ion-item-background: #ffffff; /* Fondo de los elementos */
+  --ion-item-color: #490d54; /* Color del texto en los elementos */
   
-    --ion-color-light: #f4f7fb;
-    --ion-color-light-rgb: 244, 247, 251;
-    --ion-color-light-contrast: #233e57;
-    --ion-color-light-contrast-rgb: 35, 62, 87;
-    --ion-color-light-shade: #e7eff7;
-    --ion-color-light-tint: #ffffff;
-  
-    --ion-color-dark: #233e57;
-    --ion-color-dark-rgb: 35, 62, 87;
-    --ion-color-dark-contrast: #ffffff;
-    --ion-color-dark-contrast-rgb: 255, 255, 255;
-    --ion-color-dark-shade: #1f354c;
-    --ion-color-dark-tint: #2c496a;
-  }
-  
+  --ion-refresher-background: #ffc6e4; /* Fondo del refresher */
+  --ion-refresher-color: #ca62d3; /* Color del refresher */
+}

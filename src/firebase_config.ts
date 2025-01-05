@@ -7,7 +7,9 @@ import {
   updateProfile,
   sendPasswordResetEmail
 } from "firebase/auth";
-import { getDatabase, ref, set, get, child, push } from "firebase/database";
+import { toast } from './toast';
+import firebase from 'firebase/app';
+import { getDatabase, ref, set, get, child, push, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBPsP8pe5SwKWZz_ly8w1rFiYH_SdbLvWI",
@@ -98,36 +100,68 @@ export async function deleteUserAccount(user: any) {
 
 export async function saveUserMessage(uid: string, messageData: { message: string; image: string | null; dateTime: string }) {
   try {
+    const user = auth.currentUser;
+    const displayName = user?.displayName || 'Usuario Anónimo';  // Obtén el displayName del usuario autenticado
     const messageRef = push(ref(database, `users/${uid}`));
-    await set(messageRef, messageData);
+    await set(messageRef, {
+      ...messageData,
+      displayName: displayName,
+      id: messageRef.key,
+    });
     console.log("Mensaje guardado exitosamente:", messageData);
   } catch (error) {
-    console.error("Error al guardar el mensaje en Firebase:", error);
-    throw error;
+    console.error("Error al guardar el mensaje:", error);
   }
 }
 
-export async function getMessages(uid: string): Promise<any[]> {
+export async function getMessages() {
   try {
-    const messagesRef = ref(database, `users/${uid}`);
+    // Referencia a la ubicación donde se almacenan todos los mensajes
+    const messagesRef = ref(database, `users`);
     const snapshot = await get(messagesRef);
+    
+    // Verifica si existen datos en la ruta especificada
     if (snapshot.exists()) {
-      const messages: any[] = [];
-      snapshot.forEach((childSnapshot) => {
-        const messageData = childSnapshot.val();
-        messages.push({
-          ...messageData,
-          id: childSnapshot.key, // Incluye el ID del mensaje
-        });
-      });
-      return messages;
+      const messages = snapshot.val();
+      
+      // Extrae todos los mensajes de la estructura y devuelve un array
+      const allMessages = [];
+      // Itera sobre todos los usuarios y sus mensajes
+      for (const userId in messages) {
+        if (messages.hasOwnProperty(userId)) {
+          const userMessages = messages[userId];
+          for (const messageId in userMessages) {
+            if (userMessages.hasOwnProperty(messageId)) {
+              const message = userMessages[messageId];
+              allMessages.push({
+                id: message.id,
+                message: message.message,
+                displayName: message.displayName,
+                dateTime: message.dateTime,
+                uid: message.uid,
+              });
+            }
+          }
+        }
+      }
+      return allMessages;
     } else {
-      console.log("No se encontraron mensajes para este usuario.");
       return [];
     }
   } catch (error) {
-    console.error("Error al obtener los mensajes de Firebase:", error);
-    throw error;
+    console.error('Error fetching messages from Firebase:', error);
+    return [];
+  }
+}
+
+export async function deleteUserMessage(uid: string, messageId: string) {
+  try {
+    const messageRef = ref(database, `users/${uid}/${messageId}`); // Usa la ruta correcta
+    await remove(messageRef); // Elimina el mensaje de la base de datos
+    console.log('Mensaje eliminado correctamente');
+  } catch (error) {
+    console.error('Error al eliminar el mensaje:', error);
+    throw error; // Lanza el error para manejarlo en el componente
   }
 }
 

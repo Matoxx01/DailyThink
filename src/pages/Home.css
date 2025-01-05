@@ -5,6 +5,10 @@
     gap: 8px;
 }
 
+.refreshSpinner .ion-icon {
+    color: #84a1c1;
+}
+
 .input-message {
     flex: 1;
 }
@@ -36,6 +40,97 @@
     animation: fadeIn 0.5s ease-in-out;
     margin-bottom: 16px;
 }
+
+/* Contenedor principal de carga */
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffc6e4;
+    text-align: center;
+}
+
+/* Estilo del spinner de carga */
+.loadingSpinner {
+    color: #933596;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+}
+
+.menu {
+    ion-list {
+        background-color: #ffc6e4;
+        color: #933596;
+    }
+}
+
+/* Estilo del texto de carga */
+.loadingText {
+    font-size: 1.2rem;
+    color: #72044a;
+    font-weight: 500;
+    margin-top: 10px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.menuButton {
+    /* Botón de menú: color blanco para contraste */
+    color: black;
+  }
+
+  .messages-container {
+    background-color: #ffc6e4; /* Fondo claro */
+    padding: 16px;
+    border-radius: 8px;
+  }
+  
+  .messages-container h4 {
+    color: #933596; /* Color del nombre de usuario */
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  
+  .messages-container p {
+    color: #652966; /* Color del texto del mensaje */
+    font-size: 1em;
+  }
+
+  .messages-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  ion-card {
+    background-color: #fdc8f8; /* Fondo blanco para el IonCard */
+    border: 1px solid #af43b6; /* Borde con color secundario */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    border-radius: 8px;
+  }
+  
+  ion-card-content {
+    padding: 16px;
+    color: #652966; /* Color de texto dentro del IonCard */
+  }
+  
+  ion-card p {
+    color: #933596; /* Color del texto de la fecha */
+    font-size: 0.9em;
+  }  
+
+/* Animación para el texto */
+@keyframes fadeIn {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}  
 
 @keyframes fadeIn {
     from {

@@ -5,6 +5,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Reset from './pages/Reset';
+import Account from './pages/Account';
 import Register from './pages/Register';
 
 /* Core CSS required for Ionic components to work properly */
@@ -34,7 +35,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
     return localStorage.getItem('isLoggedIn') === 'true';
 });
-const [user, setUser] = useState<{ uid: string; email: string } | null>(() => {
+const [user, setUser] = useState<{ uid: string; email: string; displayName: string } | null>(() => {
   const storedUser = localStorage.getItem('user');
   return storedUser ? JSON.parse(storedUser) : null;
 });
@@ -44,7 +45,7 @@ const setAuthStatus = (status: boolean) => {
   localStorage.setItem('isLoggedIn', status.toString());
 };
 
-const setAuthUser = (user: { uid: string; email: string } | null) => {
+const setAuthUser = (user: { uid: string; email: string; displayName: string } | null) => {
   setUser(user);
   if (user) {
       localStorage.setItem('user', JSON.stringify(user));
@@ -81,21 +82,22 @@ export const useAuth = () => {
 
 interface AuthContextType {
 isLoggedIn: boolean;
-user: { uid: string; email: string } | null;
+user: { uid: string; email: string; displayName: string } | null;
 setIsLoggedIn: (status: boolean) => void;
-setUser: (user: { uid: string; email: string } | null) => void;
+setUser: (user: { uid: string; email: string; displayName: string } | null) => void;
 }
 
 const App: React.FC = () => (
   <AuthProvider>
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
+        <IonRouterOutlet id='main-content'>
           <Route exact path="/home">
             <Home />
           </Route>
           <Route path="/Login" component={Login} exact={true} />
           <Route path="/Reset" component={Reset} exact={true} />
+          <Route path="/Account" component={Account} exact={true} />
           <Route path="/Register" component={Register} exact={true} />
           <Route exact path="/">
             <Redirect to="/home" />
