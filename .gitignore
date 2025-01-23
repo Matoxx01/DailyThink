@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.vscode
 /.pnp
 .pnp.js
 
@@ -19,8 +20,6 @@
 .env.production.local
 /.nx
 /.nx/cache
-/.vscode/*
-!/.vscode/extensions.json
 .idea
 
 npm-debug.log*
