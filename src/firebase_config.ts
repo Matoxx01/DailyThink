@@ -12,13 +12,13 @@ import firebase from 'firebase/app';
 import { getDatabase, ref, set, get, child, push, remove } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBPsP8pe5SwKWZz_ly8w1rFiYH_SdbLvWI",
-  authDomain: "dailythink-6c1d2.firebaseapp.com",
-  databaseURL: "https://dailythink-6c1d2-default-rtdb.firebaseio.com",
-  projectId: "dailythink-6c1d2",
-  storageBucket: "dailythink-6c1d2.firebasestorage.app",
-  messagingSenderId: "248827576886",
-  appId: "1:248827576886:web:b8882d4f486360c4874e97",
+  apiKey: import.meta.env.API_K,
+  authDomain: import.meta.env.Auth_D,
+  databaseURL: import.meta.env.URL,
+  projectId: import.meta.env.Id,
+  storageBucket: import.meta.env.SB,
+  messagingSenderId: import.meta.env.MSId,
+  appId: import.meta.env.appId,
 };
 
 const app = initializeApp(firebaseConfig);
