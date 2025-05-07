@@ -23,7 +23,6 @@ import { camera, send, star, trash } from 'ionicons/icons';
 import { saveUserMessage, getMessages, auth, deleteUserMessage } from '../firebase_config';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../App';
-import { toast } from '../toast';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -196,7 +195,7 @@ const Home: React.FC = () => {
 
   interface MessageData {
     message: string;
-    image: string | null;
+    image: string;
     dateTime: string;
     uid: string;
   }
@@ -206,7 +205,7 @@ const Home: React.FC = () => {
       const now = new Date();
       const messageData: MessageData = {
         message,
-        image: typeof image === 'string' ? image : null,
+        image: image as string,
         dateTime: now.toISOString(),
         uid: user.uid,
       };
@@ -348,7 +347,7 @@ const Home: React.FC = () => {
         </IonPage>
         <IonAlert
           isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)} // Asegura que se cierre el cuadro de alerta al descartarlo
+          onDidDismiss={() => setShowAlert(false)}
           header="¿Estás seguro?"
           message="¿Quieres eliminar este mensaje?"
           buttons={[
@@ -356,8 +355,8 @@ const Home: React.FC = () => {
               text: 'Cancelar',
               role: 'cancel',
               handler: () => {
-                setMessageToDelete(null); // Limpia el estado del mensaje a eliminar
-                setShowAlert(false); // Cierra la alerta
+                setMessageToDelete(null);
+                setShowAlert(false);
               },
             },
             {
